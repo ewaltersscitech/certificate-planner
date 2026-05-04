@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Capstone Compass</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Patrick+Hand&display=swap" rel="stylesheet">
+  <style>
+    :root { --paper:#FBF7F0; --ink:#2B2B2B; --orange:#E76F51; --teal:#2A9D8F; --brick:#C44536; }
+    body { font-family: Inter, system-ui, sans-serif; color:var(--ink); background: radial-gradient(circle at 1px 1px, rgba(43,43,43,.05) 1px, transparent 0), var(--paper); background-size:18px 18px; }
+    .hand { font-family:'Patrick Hand', cursive; }
+    .screen { display:none; }
+    .screen.active { display:block; }
+    .note { transform:rotate(-1deg); }
+    .note:nth-child(even) { transform:rotate(1.5deg); }
+    .phase-card.active { border-color:var(--orange); background:#fff7ed; }
+    @media print { .no-print, header, nav, button { display:none!important; } body { background:white; } main { max-width:none!important; padding:0!important; } .screen { display:none!important; } #screen-7 { display:block!important; box-shadow:none!important; } }
+  </style>
+</head>
+<body class="min-h-screen">
+  <main class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+    <header class="no-print mb-6 flex flex-col gap-4 rounded-[2rem] bg-[#fffaf3]/90 p-6 shadow-sm ring-1 ring-black/10 md:flex-row md:items-center md:justify-between">
+      <div>
+        <p class="hand text-2xl text-[#E76F51]">Capstone Compass</p>
+        <h1 class="text-3xl font-black tracking-tight sm:text-5xl">Find the shape of your project.</h1>
+        <p class="mt-3 max-w-3xl text-sm leading-6 text-neutral-700 sm:text-base">A private, single-session design thinking tool that helps you ask better questions and sequence the steps of a capstone project.</p>
+      </div>
+      <div class="rounded-2xl bg-[#C7F0DB] px-4 py-3 text-sm font-semibold shadow-sm">Local only. Nothing is saved or sent.</div>
+    </header>
+
+    <nav id="progressNav" class="no-print mb-6 hidden rounded-3xl bg-white/80 p-3 shadow-sm ring-1 ring-black/10 lg:block">
+      <div class="grid grid-cols-5 gap-2 text-center text-xs font-bold uppercase tracking-wide">
+        <button class="phase-card rounded-2xl border-2 border-transparent p-3" data-jump="2">1. Empathize</button>
+        <button class="phase-card rounded-2xl border-2 border-transparent p-3" data-jump="3">2. Define</button>
+        <button class="phase-card rounded-2xl border-2 border-transparent p-3" data-jump="4">3. Ideate</button>
+        <button class="phase-card rounded-2xl border-2 border-transparent p-3" data-jump="5">4. Prototype</button>
+        <button class="phase-card rounded-2xl border-2 border-transparent p-3" data-jump="6">5. Test</button>
+      </div>
+    </nav>
+
+    <section id="screen-0" class="screen active rounded-[2rem] bg-white/85 p-6 shadow-sm ring-1 ring-black/10 sm:p-10">
+      <div class="grid gap-8 lg:grid-cols-[1fr_0.8fr] lg:items-center">
+        <div>
+          <p class="hand text-3xl text-[#2A9D8F]">Welcome, designer.</p>
+          <h2 class="mt-2 text-4xl font-black tracking-tight sm:text-6xl">Turn a messy idea into a project brief.</h2>
+          <p class="mt-5 max-w-2xl text-lg leading-8 text-neutral-700">You’ll move through five phases: empathize, define, ideate, prototype, and test. Prototype and test are planning phases here — you’ll build and test later.</p>
+          <button class="next mt-8 rounded-2xl bg-[#E76F51] px-6 py-4 font-bold text-white shadow-sm hover:brightness-95">Begin</button>
+        </div>
+        <div class="space-y-4">
+          <div class="note rounded-3xl bg-[#FFF3B0] p-5 shadow-md"><strong>Ask better questions.</strong><br>Good capstones start with sharper ways of seeing the problem.</div>
+          <div class="note rounded-3xl bg-[#C7DFFC] p-5 shadow-md"><strong>Sequence the work.</strong><br>Leave with a roadmap you can actually follow.</div>
+          <div class="note rounded-3xl bg-[#FFD6E0] p-5 shadow-md"><strong>Keep it private.</strong><br>Your work exists only in this browser session.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-1" class="screen rounded-[2rem] bg-white/85 p-6 shadow-sm ring-1 ring-black/10 sm:p-10">
+      <p class="hand text-3xl text-[#E76F51]">Setup</p>
+      <h2 class="text-3xl font-black">Name your draft.</h2>
+      <p class="mt-3 max-w-2xl text-neutral-700">These details are only used inside this page and later in your draft brief.</p>
+      <div class="mt-8 grid gap-5 md:grid-cols-2">
+        <label class="block font-bold">Student name<input id="studentName" class="mt-2 w-full rounded-2xl border border-black/20 bg-white p-4 font-normal outline-none focus:border-[#E76F51]" placeholder="Your name"></label>
+        <label class="block font-bold">Working project title<input id="projectTitle" class="mt-2 w-full rounded-2xl border border-black/20 bg-white p-4 font-normal outline-none focus:border-[#E76F51]" placeholder="A rough title is fine"></label>
+      </div>
+      <div class="mt-8 flex gap-3"><button class="back rounded-2xl border border-black/20 px-5 py-3 font-bold">Back</button><button class="next rounded-2xl bg-[#E76F51] px-5 py-3 font-bold text-white">Continue</button></div>
+    </section>
+
+    <section id="phaseShell" class="screen rounded-[2rem] bg-white/85 p-6 shadow-sm ring-1 ring-black/10 sm:p-10">
+      <div class="mb-8 flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+        <div><p id="phaseCount" class="hand text-3xl text-[#2A9D8F]">Phase 1 of 5</p><h2 id="phaseTitle" class="text-4xl font-black tracking-tight">Empathize</h2><p id="phaseIntro" class="mt-3 max-w-3xl leading-7 text-neutral-700"></p></div>
+        <button id="reviewBtn" class="rounded-2xl border border-black/20 px-4 py-3 text-sm font-bold hover:bg-black/5">Review Draft</button>
+      </div>
+
+      <div class="grid gap-6 lg:grid-cols-[1fr_0.8fr]">
+        <div class="space-y-5">
+          <div class="rounded-3xl bg-[#FBF7F0] p-5 ring-1 ring-black/10">
+            <label id="promptOneLabel" class="block text-lg font-black"></label>
+            <textarea id="promptOne" class="mt-3 h-28 w-full rounded-2xl border border-black/20 bg-white p-4 outline-none focus:border-[#E76F51]"></textarea>
+            <div class="mt-3 flex flex-wrap gap-2"><button class="helper rounded-full border border-black/20 px-3 py-2 text-xs font-bold" data-type="example">Show me an example</button><button class="helper rounded-full border border-black/20 px-3 py-2 text-xs font-bold" data-type="starter">I'm stuck — give me a starter</button></div>
+            <div id="helperBox" class="mt-4 hidden rounded-2xl bg-white p-4 text-sm ring-1 ring-black/10"></div>
+          </div>
+
+          <div id="empathyMap" class="hidden rounded-3xl bg-white p-5 shadow-sm ring-1 ring-black/10">
+            <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between"><div><h3 class="text-xl font-black">Empathy Map</h3><p class="mt-1 text-sm text-neutral-700">Add quick notes about what your user might say, think, do, and feel.</p></div><button id="addEmpathyNote" class="rounded-2xl bg-[#2A9D8F] px-4 py-3 text-sm font-bold text-white">Add note</button></div>
+            <div class="mt-4 grid gap-4 md:grid-cols-2">
+              <div class="empathy-zone min-h-40 rounded-3xl bg-[#FFF3B0] p-4 shadow-sm" data-zone="says"><h4 class="font-black">Says</h4><div class="noteList mt-3 space-y-2"></div></div>
+              <div class="empathy-zone min-h-40 rounded-3xl bg-[#C7DFFC] p-4 shadow-sm" data-zone="thinks"><h4 class="font-black">Thinks</h4><div class="noteList mt-3 space-y-2"></div></div>
+              <div class="empathy-zone min-h-40 rounded-3xl bg-[#C7F0DB] p-4 shadow-sm" data-zone="does"><h4 class="font-black">Does</h4><div class="noteList mt-3 space-y-2"></div></div>
+              <div class="empathy-zone min-h-40 rounded-3xl bg-[#FFD6E0] p-4 shadow-sm" data-zone="feels"><h4 class="font-black">Feels</h4><div class="noteList mt-3 space-y-2"></div></div>
+            </div>
+            <p class="mt-3 text-xs text-neutral-600">Desktop: drag notes between boxes. Mobile: use the dropdown on each note.</p>
+          </div>
+
+          <div id="themeSort" class="hidden rounded-3xl bg-white p-5 shadow-sm ring-1 ring-black/10">
+            <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between"><div><h3 class="text-xl font-black">Theme Sort</h3><p class="mt-1 text-sm text-neutral-700">Move observations into patterns. Patterns help you define the real problem.</p></div><button id="addThemeCard" class="rounded-2xl bg-[#2A9D8F] px-4 py-3 text-sm font-bold text-white">Add card</button></div>
+            <div class="mt-4 grid gap-4 lg:grid-cols-3">
+              <div class="theme-zone min-h-52 rounded-3xl bg-[#FFF3B0] p-4 shadow-sm" data-theme="needs"><h4 class="font-black">Needs</h4><p class="text-xs">What the user needs help with</p><div class="themeList mt-3 space-y-2"></div></div>
+              <div class="theme-zone min-h-52 rounded-3xl bg-[#C7DFFC] p-4 shadow-sm" data-theme="barriers"><h4 class="font-black">Barriers</h4><p class="text-xs">What gets in the user’s way</p><div class="themeList mt-3 space-y-2"></div></div>
+              <div class="theme-zone min-h-52 rounded-3xl bg-[#FFD6E0] p-4 shadow-sm" data-theme="opportunities"><h4 class="font-black">Opportunities</h4><p class="text-xs">Where a design could help</p><div class="themeList mt-3 space-y-2"></div></div>
+            </div>
+            <p class="mt-3 text-xs text-neutral-600">Desktop: drag cards between themes. Mobile: use the dropdown on each card.</p>
+          </div>
+
+          <div class="rounded-3xl bg-[#FBF7F0] p-5 ring-1 ring-black/10"><label id="promptTwoLabel" class="block text-lg font-black"></label><textarea id="promptTwo" class="mt-3 h-28 w-full rounded-2xl border border-black/20 bg-white p-4 outline-none focus:border-[#E76F51]"></textarea></div>
+        </div>
+
+        <aside class="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-black/10"><h3 class="text-xl font-black">Questions designers ask here</h3><ul id="questionList" class="mt-4 space-y-3 text-sm leading-6"></ul><div class="mt-6 rounded-3xl bg-[#FFF3B0] p-4 shadow-sm"><p class="hand text-2xl">Working notes</p><p id="phaseNudge" class="mt-1 text-sm"></p></div></aside>
+      </div>
+
+      <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-between"><button class="back rounded-2xl border border-black/20 px-5 py-3 font-bold">Back</button><button class="next rounded-2xl bg-[#E76F51] px-5 py-3 font-bold text-white">Continue to next phase</button></div>
+    </section>
+
+    <section id="screen-7" class="screen rounded-[2rem] bg-white/85 p-6 shadow-sm ring-1 ring-black/10 sm:p-10">
+      <p class="hand text-3xl text-[#E76F51]">Review</p><h2 class="text-4xl font-black">Draft Capstone Project Brief</h2><p class="mt-3 max-w-3xl text-neutral-700">This is a draft — meant to evolve as your project develops.</p>
+      <div id="briefPreview" class="mt-8 space-y-5"></div>
+      <div class="no-print mt-8 flex flex-col gap-3 sm:flex-row"><button class="back rounded-2xl border border-black/20 px-5 py-3 font-bold">Back</button><button onclick="window.print()" class="rounded-2xl bg-[#2A9D8F] px-5 py-3 font-bold text-white">Print / Save as PDF</button></div>
+    </section>
+  </main>
+
+  <script>
+    const phases=[
+      {title:'Empathize',intro:'In the Empathize phase, you are trying to understand the people affected by your problem before jumping to a solution.',one:'Who are the people you want to help?',two:'Complete this thought: The people I want to help are ___, and right now they have to deal with ___.',questions:['Who is affected by this problem?','How do they currently cope with it?','What might they feel that I have not seen yet?'],nudge:'Take your time with this one. It is the foundation everything else will build on.'},
+      {title:'Define',intro:'In the Define phase, you turn what you noticed into a focused problem statement.',one:'Write a problem statement: [User] needs a way to ___ because ___.',two:'What is the smallest piece of this problem you could actually solve?',questions:['What is the core need underneath the surface complaint?','What pattern keeps showing up?','What is focused enough to act on?'],nudge:'Designers come back to this question often. You do not have to nail it the first time.'},
+      {title:'Ideate',intro:'In the Ideate phase, you generate multiple possible directions before choosing one.',one:'Write 3–5 How Might We questions.',two:'Brainstorm 5–7 possible solutions or project ideas.',questions:['How might we make this easier, safer, clearer, or more meaningful?','What could technology help with?','What idea feels useful and realistic?'],nudge:'This is the messy, exploratory part. It is supposed to feel a little uncertain.'},
+      {title:'Prototype',intro:'In the Prototype phase, you plan the simplest version of your idea that someone could react to.',one:'Describe your prototype in two sentences.',two:'List the main components, features, tools, or materials you may need.',questions:['What is the simplest version of this idea I could build?','What is the riskiest assumption I am making?','What comes first, and what can wait?'],nudge:'A prototype does not need to be perfect. It needs to help you learn.'},
+      {title:'Test',intro:'In the Test phase, you plan how real users will respond to your prototype so you can improve it.',one:'I would test this prototype with ___ by ___.',two:'What would success look like? What would you do if testers did not like it?',questions:['What do I want to learn from testing?','How will I know if this actually solves the problem?','What feedback would change my next version?'],nudge:'Testing is not about proving you were right. It is about learning what to improve.'}
+    ];
+    const examples={example:['EXAMPLE: First-year students need a calmer way to find their classes because the first week of school can feel confusing and rushed.','EXAMPLE: A wearable device could gently alert a user when noise levels get too high in a study space.'],starter:['The user I want to help is...','One problem they face is...','A simple first version of my idea could be...']};
+    let screen=0, phaseIndex=0;
+    const data={studentName:'',projectTitle:'',phases:phases.map(()=>({one:'',two:''})),empathy:{says:['I wish this was easier to understand.'],thinks:['I do not know where to start.'],does:['Tries a workaround.'],feels:['Frustrated but curious.']},themes:{needs:['Needs clearer starting steps'],barriers:['Feels overwhelmed by too many choices'],opportunities:['Could use a simple guide or tool']}};
+    const screens=[...document.querySelectorAll('.screen')], progressNav=document.getElementById('progressNav'), phaseCards=[...document.querySelectorAll('.phase-card')], phaseShell=document.getElementById('phaseShell');
+    function saveCurrentPhase(){ if(screen>=2&&screen<=6){data.phases[phaseIndex].one=document.getElementById('promptOne').value;data.phases[phaseIndex].two=document.getElementById('promptTwo').value;} data.studentName=document.getElementById('studentName')?.value||data.studentName; data.projectTitle=document.getElementById('projectTitle')?.value||data.projectTitle; }
+    function showScreen(nextScreen){ saveCurrentPhase(); screen=Math.max(0,Math.min(7,nextScreen)); screens.forEach(s=>s.classList.remove('active')); if(screen>=2&&screen<=6){phaseShell.classList.add('active'); phaseIndex=screen-2; function renderIdeateBoard(){
+ if(phaseIndex!==2) return;
+ const board=document.getElementById('ideateBoard');
+ if(!board) return;
+ const hmw=document.getElementById('hmwList');
+ if(hmw){
+   hmw.innerHTML=data.hmw.map((q,i)=>`<textarea data-hmw="${i}" class="w-full rounded-2xl border border-black/10 bg-white p-3 mb-2">${q}</textarea>`).join('');
+   document.querySelectorAll('[data-hmw]').forEach(el=>el.addEventListener('input',e=>data.hmw[Number(e.target.dataset.hmw)]=e.target.value));
+ }
+ renderMovable('.idea-zone','idea-card','.ideaList',data.ideas,'idea','moveIdea','deleteIdea',moveIdeaCard);
+}
+function moveIdeaCard(from,index,to){
+ if(from===to) return;
+ const [item]=data.ideas[from].splice(index,1);
+ data.ideas[to].push(item);
+ renderIdeateBoard();
+}
+
+// inject Phase 3 board if not present
+if(!document.getElementById('ideateBoard')){
+ const themeSort=document.getElementById('themeSort');
+ const ideate=document.createElement('div');
+ ideate.id='ideateBoard';
+ ideate.className='hidden rounded-3xl bg-white p-5 shadow-sm ring-1 ring-black/10';
+ ideate.innerHTML=`
+ <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+ <div><h3 class="text-xl font-black">How Might We + Idea Priorities</h3><p class="mt-1 text-sm text-neutral-700">Generate HMW questions, then sort ideas into a lightweight impact/feasibility board.</p></div>
+ <button id="addIdeaCard" class="rounded-2xl bg-[#2A9D8F] px-4 py-3 text-sm font-bold text-white">Add idea</button></div>
+ <div class="mt-4 rounded-3xl bg-[#FBF7F0] p-4 ring-1 ring-black/10"><p class="font-black">Sample HMW Questions (editable)</p><div id="hmwList" class="mt-3"></div></div>
+ <div class="mt-5 grid gap-4 lg:grid-cols-3">
+ <div class="idea-zone rounded-3xl bg-[#FFF3B0] p-4 shadow-sm" data-idea="parked"><h4 class="font-black">Explore More</h4><div class="ideaList mt-3 space-y-2"></div></div>
+ <div class="idea-zone rounded-3xl bg-[#C7F0DB] p-4 shadow-sm" data-idea="priority"><h4 class="font-black">High Impact + Feasible</h4><div class="ideaList mt-3 space-y-2"></div></div>
+ <div class="idea-zone rounded-3xl bg-[#FFD6E0] p-4 shadow-sm" data-idea="stretch"><h4 class="font-black">Stretch Concepts</h4><div class="ideaList mt-3 space-y-2"></div></div>
+ </div>`;
+ themeSort.insertAdjacentElement('afterend',ideate);
+ data.hmw=['How might we reduce friction for first-year students?','How might we use technology to make support more visible?','How might we prototype a simple first intervention?'];
+ data.ideas={parked:['Sensor-based quiet room alert','Wayfinding helper app'],priority:['Peer support matching tool'],stretch:['Interactive installation idea']};
+ setTimeout(()=>{
+  document.getElementById('addIdeaCard')?.addEventListener('click',()=>{data.ideas.parked.push('New concept...');renderIdeateBoard();});
+ },50);
+}
+
+const originalRenderPhase=renderPhase;
+renderPhase=function(){
+ originalRenderPhase();
+ const ideate=document.getElementById('ideateBoard');
+ if(ideate) ideate.classList.toggle('hidden',phaseIndex!==2);
+ renderIdeateBoard();
+};
+
+const originalRenderBrief=renderBrief;
+renderBrief=function(){
+ originalRenderBrief();
+ const phaseCards=document.querySelectorAll('#briefPreview > div');
+ if(phaseCards[3]){
+   const insert=document.createElement('div');
+   insert.className='mt-4 rounded-2xl bg-[#FBF7F0] p-4 ring-1 ring-black/10';
+   insert.innerHTML=`<p class='font-black'>How Might We Questions</p><ul class='mt-2 list-disc pl-5 text-sm'>${data.hmw.map(q=>`<li>${q}</li>`).join('')}</ul>${sectionGrid(data.ideas,'md:grid-cols-3')}`;
+   phaseCards[3].before(insert);
+ }
+};
+
+function renderPrototypeBoard(){
+ if(phaseIndex!==3) return;
+ const board=document.getElementById('prototypeBoard');
+ if(!board) return;
+ renderMovable('.proto-zone','proto-card','.protoList',data.prototypePriority,'proto','moveProto','deleteProto',moveProtoCard);
+}
+function moveProtoCard(from,index,to){
+ if(from===to) return;
+ const [item]=data.prototypePriority[from].splice(index,1);
+ data.prototypePriority[to].push(item);
+ renderPrototypeBoard();
+}
+
+if(!document.getElementById('prototypeBoard')){
+ const ideate=document.getElementById('ideateBoard');
+ const proto=document.createElement('div');
+ proto.id='prototypeBoard';
+ proto.className='hidden rounded-3xl bg-white p-5 shadow-sm ring-1 ring-black/10';
+ proto.innerHTML=`
+ <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+ <div><h3 class="text-xl font-black">Prototype MVP Priorities</h3><p class="mt-1 text-sm text-neutral-700">Sequence what belongs in a minimum viable prototype versus what can wait.</p></div>
+ <button id="addProtoCard" class="rounded-2xl bg-[#2A9D8F] px-4 py-3 text-sm font-bold text-white">Add feature</button></div>
+ <div class="mt-5 grid gap-4 lg:grid-cols-3">
+ <div class="proto-zone rounded-3xl bg-[#FFF3B0] p-4 shadow-sm" data-proto="must"><h4 class="font-black">Must Build First</h4><div class="protoList mt-3 space-y-2"></div></div>
+ <div class="proto-zone rounded-3xl bg-[#C7F0DB] p-4 shadow-sm" data-proto="next"><h4 class="font-black">Build Next</h4><div class="protoList mt-3 space-y-2"></div></div>
+ <div class="proto-zone rounded-3xl bg-[#FFD6E0] p-4 shadow-sm" data-proto="later"><h4 class="font-black">Later Possibilities</h4><div class="protoList mt-3 space-y-2"></div></div>
+ </div>`;
+ ideate.insertAdjacentElement('afterend',proto);
+ data.prototypePriority={
+  must:['Core sensing function','Basic interface flow'],
+  next:['Notification layer'],
+  later:['Analytics dashboard']
+ };
+ setTimeout(()=>{
+  document.getElementById('addProtoCard')?.addEventListener('click',()=>{
+   data.prototypePriority.must.push('New feature...');
+   renderPrototypeBoard();
+  });
+ },50);
+}
+
+const prevRenderPhase=renderPhase;
+renderPhase=function(){
+ prevRenderPhase();
+ const proto=document.getElementById('prototypeBoard');
+ if(proto) proto.classList.toggle('hidden',phaseIndex!==3);
+ renderPrototypeBoard();
+};
+
+const prevRenderBrief=renderBrief;
+renderBrief=function(){
+ prevRenderBrief();
+ const sections=document.querySelectorAll('#briefPreview > div');
+ if(sections[4]){
+  const insert=document.createElement('div');
+  insert.className='mt-4 rounded-2xl bg-[#FBF7F0] p-4 ring-1 ring-black/10';
+  insert.innerHTML=`<p class='font-black'>Prototype Feature Priorities</p>${sectionGrid(data.prototypePriority,'md:grid-cols-3')}`;
+  sections[4].before(insert);
+ }
+};
+
+function renderTestBoard(){
+ if(phaseIndex!==4) return;
+ const board=document.getElementById('testBoard');
+ if(!board) return;
+ renderMovable('.test-zone','test-card','.testList',data.testingPlan,'test','moveTest','deleteTest',moveTestCard);
+}
+function moveTestCard(from,index,to){
+ if(from===to) return;
+ const [item]=data.testingPlan[from].splice(index,1);
+ data.testingPlan[to].push(item);
+ renderTestBoard();
+}
+
+if(!document.getElementById('testBoard')){
+ const proto=document.getElementById('prototypeBoard');
+ const test=document.createElement('div');
+ test.id='testBoard';
+ test.className='hidden rounded-3xl bg-white p-5 shadow-sm ring-1 ring-black/10';
+ test.innerHTML=`
+ <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+ <div><h3 class="text-xl font-black">Testing Plan Sequencer</h3><p class="mt-1 text-sm text-neutral-700">Sequence how you would test your prototype and what you want to learn.</p></div>
+ <button id="addTestCard" class="rounded-2xl bg-[#2A9D8F] px-4 py-3 text-sm font-bold text-white">Add step</button></div>
+ <div class="mt-5 grid gap-4 lg:grid-cols-3">
+ <div class="test-zone rounded-3xl bg-[#FFF3B0] p-4 shadow-sm" data-test="prepare"><h4 class="font-black">Prepare</h4><div class="testList mt-3 space-y-2"></div></div>
+ <div class="test-zone rounded-3xl bg-[#C7F0DB] p-4 shadow-sm" data-test="run"><h4 class="font-black">Run Test</h4><div class="testList mt-3 space-y-2"></div></div>
+ <div class="test-zone rounded-3xl bg-[#FFD6E0] p-4 shadow-sm" data-test="iterate"><h4 class="font-black">Observe + Iterate</h4><div class="testList mt-3 space-y-2"></div></div>
+ </div>`;
+ proto.insertAdjacentElement('afterend',test);
+ data.testingPlan={
+  prepare:['Recruit 3 student testers','Prepare clickable prototype'],
+  run:['Observe users completing a task'],
+  iterate:['Revise based on friction points']
+ };
+ setTimeout(()=>{
+  document.getElementById('addTestCard')?.addEventListener('click',()=>{
+   data.testingPlan.prepare.push('New testing step...');
+   renderTestBoard();
+  });
+ },50);
+}
+
+const priorRenderPhase=renderPhase;
+renderPhase=function(){
+ priorRenderPhase();
+ const test=document.getElementById('testBoard');
+ if(test) test.classList.toggle('hidden',phaseIndex!==4);
+ renderTestBoard();
+};
+
+const priorRenderBrief=renderBrief;
+renderBrief=function(){
+ priorRenderBrief();
+ const sections=document.querySelectorAll('#briefPreview > div');
+ if(sections[5]){
+  const insert=document.createElement('div');
+  insert.className='mt-4 rounded-2xl bg-[#FBF7F0] p-4 ring-1 ring-black/10';
+  insert.innerHTML=`<p class='font-black'>Testing Plan Sequence</p>${sectionGrid(data.testingPlan,'md:grid-cols-3')}`;
+  sections[5].before(insert);
+ }
+};
+
+const polishStyle=document.createElement('style');
+polishStyle.innerHTML='@media print { #roadmapPanel{break-before:page;} .note{transform:none;} }';
+document.head.appendChild(polishStyle);
+
+const baseBrief=renderBrief;
+renderBrief=function(){
+ baseBrief();
+ const preview=document.getElementById('briefPreview');
+ if(!document.getElementById('deliverableHeader')){
+   const hdr=document.createElement('div');
+   hdr.id='deliverableHeader';
+   hdr.className='rounded-3xl bg-[#C7F0DB] p-5 shadow-sm';
+   hdr.innerHTML=`<h3 class="text-2xl font-black">Capstone Project Brief + Roadmap</h3><p class="mt-2 text-sm">Designed for capstone conferences and iterative planning.</p>`;
+   preview.prepend(hdr);
+ }
+ if(!document.getElementById('roadmapPanel')){
+   const roadmap=document.createElement('div');
+   roadmap.id='roadmapPanel';
+   roadmap.className='rounded-3xl bg-white p-6 shadow-sm ring-1 ring-black/10';
+   roadmap.innerHTML=`
+    <h3 class="text-3xl font-black">Visual Project Roadmap</h3>
+    <div class="mt-8 grid gap-4 md:grid-cols-5">
+      ${['Empathize','Define','Ideate','Prototype','Test'].map((phase,i)=>`
+      <div class="rounded-3xl bg-[#FBF7F0] p-4 relative">
+       <div class="note rounded-2xl bg-white p-3 shadow-sm ring-1 ring-black/10">
+         <p class="font-black text-sm">${phase}</p>
+         <ul id="road-${i}" class="mt-2 text-xs list-disc pl-4 space-y-1"></ul>
+       </div>
+       ${i<4?'<div class="hidden md:block absolute -right-4 top-1/2 text-2xl font-black text-[#E76F51]">→</div>':''}
+      </div>`).join('')}
+    </div>
+    <div class="mt-8 rounded-3xl bg-[#FFF3B0] p-5 shadow-sm"><h4 class="text-xl font-black">Teacher Notes</h4><div class="mt-4 h-32 rounded-2xl border-2 border-dashed border-black/20"></div></div>`;
+   preview.appendChild(roadmap);
+ }
+ const fills=[
+  [data.phases[0].one,...Object.values(data.empathy).flat().slice(0,2)],
+  [data.phases[1].one,...Object.values(data.themes).flat().slice(0,2)],
+  [data.hmw?.[0],...(data.ideas?.priority||[]).slice(0,2)],
+  [...(data.prototypePriority?.must||[]).slice(0,3)],
+  [...(data.testingPlan?.iterate||[]).slice(0,3)]
+ ];
+ fills.forEach((items,i)=>{
+  const el=document.getElementById('road-'+i);
+  if(el) el.innerHTML=items.filter(Boolean).map(x=>`<li>${x}</li>`).join('');
+ });
+};
+
+renderPhase();} else {document.getElementById(`screen-${screen}`).classList.add('active');} progressNav.classList.toggle('hidden',screen<2||screen>6); updatePhaseCards(); if(screen===7)renderBrief(); window.scrollTo({top:0,behavior:'smooth'}); }
+    function renderPhase(){ const p=phases[phaseIndex]; document.getElementById('phaseCount').textContent=`Phase ${phaseIndex+1} of 5`; document.getElementById('phaseTitle').textContent=p.title; document.getElementById('phaseIntro').textContent=p.intro; document.getElementById('promptOneLabel').textContent=p.one; document.getElementById('promptTwoLabel').textContent=p.two; document.getElementById('promptOne').value=data.phases[phaseIndex].one; document.getElementById('promptTwo').value=data.phases[phaseIndex].two; document.getElementById('questionList').innerHTML=p.questions.map(q=>`<li class="rounded-2xl bg-[#FBF7F0] p-3 ring-1 ring-black/10">${q}</li>`).join(''); document.getElementById('phaseNudge').textContent=p.nudge; document.getElementById('helperBox').classList.add('hidden'); document.getElementById('empathyMap').classList.toggle('hidden',phaseIndex!==0); document.getElementById('themeSort').classList.toggle('hidden',phaseIndex!==1); renderEmpathyMap(); renderThemeSort(); }
+    function renderMovable(containerSelector, itemClass, listClass, dataObj, keyName, moveClass, deleteClass, moveFn){ document.querySelectorAll(containerSelector).forEach(zone=>{const key=zone.dataset[keyName]; const list=zone.querySelector(listClass); list.innerHTML=dataObj[key].map((text,index)=>`<div class="${itemClass} note rounded-2xl bg-white/80 p-3 text-sm shadow-sm ring-1 ring-black/10" draggable="true" data-${keyName}="${key}" data-index="${index}"><textarea class="w-full resize-none bg-transparent outline-none" rows="2">${text}</textarea><div class="mt-2 flex items-center justify-between gap-2"><select class="${moveClass} rounded-xl border border-black/20 bg-white px-2 py-1 text-xs">${Object.keys(dataObj).map(k=>`<option value="${k}" ${k===key?'selected':''}>${k}</option>`).join('')}</select><button class="${deleteClass} text-xs font-bold text-[#C44536]">Remove</button></div></div>`).join('');}); document.querySelectorAll('.'+itemClass+' textarea').forEach(a=>a.addEventListener('input',e=>{const card=e.target.closest('.'+itemClass); dataObj[card.dataset[keyName]][Number(card.dataset.index)]=e.target.value;})); document.querySelectorAll('.'+moveClass).forEach(s=>s.addEventListener('change',e=>{const card=e.target.closest('.'+itemClass); moveFn(card.dataset[keyName],Number(card.dataset.index),e.target.value);})); document.querySelectorAll('.'+deleteClass).forEach(b=>b.addEventListener('click',e=>{const card=e.target.closest('.'+itemClass); dataObj[card.dataset[keyName]].splice(Number(card.dataset.index),1); if(keyName==='zone')renderEmpathyMap(); else renderThemeSort();})); document.querySelectorAll('.'+itemClass).forEach(card=>{card.addEventListener('dragstart',e=>{e.dataTransfer.setData('text/plain',JSON.stringify({from:card.dataset[keyName],index:card.dataset.index})); card.classList.add('opacity-60');}); card.addEventListener('dragend',()=>card.classList.remove('opacity-60'));}); document.querySelectorAll(containerSelector).forEach(zone=>{zone.addEventListener('dragover',e=>e.preventDefault()); zone.addEventListener('drop',e=>{e.preventDefault(); const payload=JSON.parse(e.dataTransfer.getData('text/plain')); moveFn(payload.from,Number(payload.index),zone.dataset[keyName]);});}); }
+    function renderEmpathyMap(){ if(phaseIndex!==0)return; renderMovable('.empathy-zone','empathy-note','.noteList',data.empathy,'zone','moveNote','deleteNote',moveEmpathyNote); }
+    function renderThemeSort(){ if(phaseIndex!==1)return; renderMovable('.theme-zone','theme-card','.themeList',data.themes,'theme','moveTheme','deleteTheme',moveThemeCard); }
+    function moveEmpathyNote(from,index,to){ if(from===to)return; const [item]=data.empathy[from].splice(index,1); data.empathy[to].push(item); renderEmpathyMap(); }
+    function moveThemeCard(from,index,to){ if(from===to)return; const [item]=data.themes[from].splice(index,1); data.themes[to].push(item); renderThemeSort(); }
+    function updatePhaseCards(){ phaseCards.forEach((card,i)=>card.classList.toggle('active',i===phaseIndex&&screen>=2&&screen<=6)); }
+    function sectionGrid(obj, cols){ return `<div class="mt-5 grid gap-3 ${cols}">${Object.entries(obj).map(([label,items])=>`<div class="rounded-2xl bg-[#FBF7F0] p-3 ring-1 ring-black/10"><p class="font-black capitalize">${label}</p><ul class="mt-2 list-disc space-y-1 pl-4 text-sm">${items.filter(Boolean).map(x=>`<li>${x}</li>`).join('')||'<li>Not yet completed.</li>'}</ul></div>`).join('')}</div>`; }
+    function renderBrief(){ const title=data.projectTitle||'Untitled Capstone Project', name=data.studentName||'Student'; document.getElementById('briefPreview').innerHTML=`<div class="rounded-3xl bg-[#FBF7F0] p-5 ring-1 ring-black/10"><h3 class="text-2xl font-black">${title}</h3><p class="mt-1 text-sm text-neutral-600">Prepared by ${name}</p><p class="mt-3 font-bold text-[#C44536]">This is a draft — meant to evolve as your project develops.</p></div>${phases.map((p,i)=>`<div class="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-black/10"><h4 class="hand text-3xl text-[#2A9D8F]">${p.title}</h4><p class="mt-2"><strong>${p.one}</strong></p><p class="mt-1 whitespace-pre-wrap text-neutral-700">${data.phases[i].one||'Not yet completed.'}</p><p class="mt-4"><strong>${p.two}</strong></p><p class="mt-1 whitespace-pre-wrap text-neutral-700">${data.phases[i].two||'Not yet completed.'}</p>${i===0?sectionGrid(data.empathy,'md:grid-cols-4'):''}${i===1?sectionGrid(data.themes,'md:grid-cols-3'):''}</div>`).join('')}<div class="rounded-3xl bg-[#FFF3B0] p-5 shadow-sm"><h4 class="text-xl font-black">Teacher conference questions</h4><ul class="mt-3 list-disc space-y-2 pl-5 text-sm"><li>Walk me through why you picked this user.</li><li>What is the riskiest assumption in your prototype plan?</li><li>What surprised you during ideation?</li><li>What would you need to learn next to move this forward?</li></ul></div>`; }
+    document.getElementById('addEmpathyNote').addEventListener('click',()=>{data.empathy.says.push('New observation...'); renderEmpathyMap();});
+    document.getElementById('addThemeCard').addEventListener('click',()=>{data.themes.needs.push('New pattern...'); renderThemeSort();});
+    document.querySelectorAll('.next').forEach(btn=>btn.addEventListener('click',()=>showScreen(screen+1)));
+    document.querySelectorAll('.back').forEach(btn=>btn.addEventListener('click',()=>showScreen(screen-1)));
+    document.getElementById('reviewBtn').addEventListener('click',()=>showScreen(7));
+    phaseCards.forEach(card=>card.addEventListener('click',()=>showScreen(Number(card.dataset.jump))));
+    document.querySelectorAll('.helper').forEach(btn=>btn.addEventListener('click',()=>{const box=document.getElementById('helperBox'); box.innerHTML=examples[btn.dataset.type].map(item=>`<div class="mb-2 rounded-xl bg-[#FBF7F0] p-3">${item}</div>`).join(''); box.classList.remove('hidden');}));
+    renderPhase();
+  </script>
+</body>
+</html>
